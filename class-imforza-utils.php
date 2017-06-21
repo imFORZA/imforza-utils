@@ -28,11 +28,20 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			}
 
 			/**
-		 * Filter the imforza development mode.
-		 *
-		 * @param bool $development_mode Is imforza development mode active.
-		 */
+			 * Filter the imforza development mode.
+			 *
+			 * @param bool $development_mode Is imforza development mode active.
+			 */
 			return apply_filters( 'imforza_development_mode', $development_mode );
+		}
+
+		/**
+		 * Advanced error_log method. Prints arrays recursively.
+		 *
+		 * @param  [Mixed] $data : Data to print.
+		 */
+		public static function error_log( $data ) {
+			error_log( print_r( $data, true ) );
 		}
 
 		/**
