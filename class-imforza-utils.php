@@ -38,6 +38,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		/**
 		 * Advanced error_log method. Prints arrays recursively.
 		 *
+		 * @static
 		 * @param  [Mixed] $data : Data to print.
 		 */
 		public static function error_log( $data ) {
