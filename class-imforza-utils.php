@@ -46,6 +46,54 @@ class IMFORZA_Utils {
 		}
 	}
 
+	/**
+	 * Checks if the request is coming from localhost.
+	 *
+	 * @static
+	 * @return boolean : Returns true if call is being made from localhost.
+	 */
+	public static function is_localhost() {
+		// Get remote IP.
+		$remote_ip = filter_input( INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP );
+
+		$local_ips = array(
+			'127.0.0.1', // IPv4.
+			'::1',			 // IPv6.
+		);
+
+		$local_ips = apply_filters( 'imutils_local_ips', $local_ips );
+
+		return in_array( $remote_ip, $local_ips );
+	}
+
+	/**
+	 * Checks if current site is forbidden.
+	 *
+	 * @return boolean : Returns true if current site is forbidden source.
+	 */
+	public static function is_forbidden_source() {
+		// Forbidden domains.
+		$forbidden = array(
+			'staging.wpengine.com',
+			'.dev',
+			'.local',
+		);
+
+		// Filter to add or remove domains from forbidden array.
+		$forbidden = apply_filters( 'imutils_forbiddden_domains', $forbidden );
+
+		// Grab the installs url.
+		$this_domain = parse_url( get_site_url(), PHP_URL_HOST );
+
+		foreach ( $forbidden as $domain ) {
+			if ( false !== strpos( $this_domain, $domain ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 } // end class.
 
 } // end if.
