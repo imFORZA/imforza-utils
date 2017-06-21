@@ -94,6 +94,20 @@ class IMFORZA_Utils {
 		return false;
 	}
 
+	/**
+	 * Checks if current user is accessing site from a mac.
+	 *
+	 * @return boolean : True if mac, else false.
+	 */
+	public static function is_user_mac() {
+		$user_agent = getenv( 'HTTP_USER_AGENT' );
+		if ( strpos( $user_agent, 'Mac' ) !== false ) {
+			return true;
+		}
+
+		return false;
+	}
+
 } // end class.
 
 } // end if.
