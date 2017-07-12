@@ -13,27 +13,6 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 */
 	class IMFORZA_Utils {
 
-		/**
-		 * Determine if imFORZA is in development mode?
-		 *
-		 * @static
-		 * @return bool
-		 */
-		public static function is_development_mode() {
-			$development_mode = false;
-			if ( defined( 'IMFORZA_DEBUG' ) ) {
-				$development_mode = IMFORZA_DEBUG;
-			} elseif ( site_url() && false === strpos( site_url(), '.' ) ) {
-				$development_mode = true;
-			}
-
-			/**
-			 * Filter the imforza development mode.
-			 *
-			 * @param bool $development_mode Is imforza development mode active.
-			 */
-			return apply_filters( 'imforza_development_mode', $development_mode );
-		}
 
 		/**
 		 * Advanced error_log method. Prints arrays recursively.
@@ -93,9 +72,9 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		public static function is_forbidden_source() {
 			// Forbidden domains.
 			$forbidden = array(
-			'staging.wpengine.com',
-			'.dev',
-			'.local',
+				'.wpengine.com',
+				'.dev',
+				'.local',
 			);
 
 			// Filter to add or remove domains from forbidden array.
@@ -128,6 +107,83 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			return false;
 		}
 
+		/**
+		 * Determine if imFORZA is in development mode?
+		 *
+		 * @static
+		 * @return bool
+		 */
+		public static function is_development_mode() {
+			$development_mode = false;
+			if ( defined( 'IMFORZA_DEBUG' ) ) {
+				$development_mode = IMFORZA_DEBUG;
+			} elseif ( site_url() && false === strpos( site_url(), '.' ) ) {
+				$development_mode = true;
+			}
+
+			/**
+			 * Filter the imforza development mode.
+			 *
+			 * @param bool $development_mode Is imforza development mode active.
+			 */
+			return apply_filters( 'imforza_development_mode', $development_mode );
+		}
+
 	} // end class.
 
+	/**
+	 * Wrapper function for IMFORZA_Utils::error_log();
+	 *
+	 * @param  [Mixed] $data : Data to print.
+	 */
+	function _error_log( $data ) {
+		IMFORZA_Utils::error_log( $data );
+	}
+
+	/**
+	 * Wrapper function for IMFORZA_Utils::schedule_cron();
+	 *
+	 * @param  [String] $hook        : Hook to use for cron event.
+	 * @param  [String] $recurrence  : Cron recurrence period. i.e. daily, monthly, etc.
+	 * @param  [Int]    $time        : Time to execute cron.
+	 */
+	function _schedule_cron( $hook, $recurrence = null, $time = null ) {
+		IMFORZA_Utils::schedule_cron( $hook, $recurrence, $time );
+	}
+
+	/**
+	 * Wrapper function for IMFORZA_Utils::is_localhost();
+	 *
+	 * @return boolean : Returns true if call is being made from localhost.
+	 */
+	function _is_localhost() {
+		return IMFORZA_Utils::is_localhost();
+	}
+
+	/**
+	 * Wrapper function for IMFORZA_Utils::is_forbidden_source();
+	 *
+	 * @return boolean : Returns true if current site is forbidden source.
+	 */
+	function _is_forbidden_source() {
+		return IMFORZA_Utils::is_forbidden_source();
+	}
+
+	/**
+	 * Wrapper function for IMFORZA_Utils::is_user_mac();
+	 *
+	 * @return boolean : True if mac, else false.
+	 */
+	function _is_user_mac() {
+		return IMFORZA_Utils::is_user_mac();
+	}
+
+	/**
+	 * Wrapper function for IMFORZA_Utils::is_development_mode();
+	 *
+	 * @return bool
+	 */
+	function _is_development_mode() {
+		return IMFORZA_Utils::is_development_mode();
+	}
 } // end if.
