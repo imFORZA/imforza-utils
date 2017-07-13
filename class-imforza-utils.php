@@ -44,6 +44,20 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		}
 
 		/**
+		 * Schedule cron Job.
+		 *
+		 * @static
+		 * @param  [String] $hook        : Cron hook to unschedule.
+		 */
+		public static function unschedule_cron( $hook ) {
+			$timestamp = wp_next_scheduled( $hook );
+
+			if ( $timestamp ) {
+				wp_unschedule_event( $timestamp, $hook );
+			}
+		}
+
+		/**
 		 * Checks if the request is coming from localhost.
 		 *
 		 * @static
@@ -149,6 +163,15 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 */
 	function _schedule_cron( $hook, $recurrence = null, $time = null ) {
 		IMFORZA_Utils::schedule_cron( $hook, $recurrence, $time );
+	}
+
+	/**
+	 * Wrapper function for IMFORZA_Utils::unschedule_cron();
+	 *
+	 * @param  [String] $hook        : Cron hook to unschedule.
+	 */
+	function _unschedule_cron( $hook ) {
+		IMFORZA_Utils::unschedule_cron( $hook );
 	}
 
 	/**
