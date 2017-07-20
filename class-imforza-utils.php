@@ -13,6 +13,21 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 */
 	class IMFORZA_Utils {
 
+		/**
+		 * Block Direct File Access.
+		 *
+		 * @access public
+		 * @static
+		 * @return void
+		 */
+		public static function block_direct_file_access() {
+
+			/* Exit if accessed directly. */
+			if ( ! defined( 'ABSPATH' ) ) {
+				exit;
+			}
+		}
+
 
 		/**
 		 * Advanced error_log method. Prints arrays recursively.
@@ -144,6 +159,17 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		}
 
 	} // end class.
+
+	/**
+	 * Wrapper function for Block Direct File Access.
+	 *
+	 * @access private
+	 * @return void
+	 */
+	function _block_direct_file_access() {
+		IMFORZA_Utils::block_direct_file_access();
+	}
+
 
 	/**
 	 * Wrapper function for IMFORZA_Utils::error_log();
