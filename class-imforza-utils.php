@@ -158,6 +158,35 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			return apply_filters( 'imforza_development_mode', $development_mode );
 		}
 
+		/**
+		 * Convert a csv file to an array with keys.
+		 *
+		 * @param  string  $file_path Path to csv file.
+		 * @param  boolean $to_json   True to return array as json.
+		 * @return array|WP_Error|json
+		 */
+		public static function csv_to_array( $file_path, bool $to_json = false ){
+			// Open file, return error if file could not be opened.
+			if ( ( $file = fopen( $file_path, 'r')) === false) {
+				return new WP_Error( 'file-error',  __( 'Error: Could not open file.', 'hostops' ) );
+			}
+
+			$keys = array_map( 'trim', fgetcsv( $file ) );
+			$data = array();
+
+			while ( $row = fgetcsv( $file ) ) {
+				$data[] = array_combine( $keys, array_map( 'trim', $row ) );
+			}
+
+			fclose($file);
+
+			if( true === $to_json ){
+				$data = wp_json_encode( $data );
+			}
+
+			return $data;
+		}
+
 	} // end class.
 
 	/**
@@ -234,5 +263,14 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 */
 	function _is_development_mode() {
 		return IMFORZA_Utils::is_development_mode();
+	}
+
+	/**
+	 * Wrapper function for IMFORZA_Utils::csv_to_array();
+	 *
+	 * @return array|WP_Error|json
+	 */
+	function _csv_to_array( $file_path, bool $to_json = false ){
+		return IMFORZA_Utils::csv_to_array( $file_path, $to_json );
 	}
 } // end if.
