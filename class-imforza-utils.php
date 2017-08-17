@@ -165,7 +165,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * @param  boolean $to_json   True to return array as json.
 		 * @return array|WP_Error|json
 		 */
-		public static function csv_f_to_array( $file_path, bool $to_json = false ){
+		public static function fcsv_to_array( $file_path, bool $to_json = false ){
 			// Open file, return error if file could not be opened.
 			if ( ( $file = fopen( $file_path, 'r')) === false) {
 				return new WP_Error( 'file-error',  __( 'Error: Could not open file.', 'hostops' ) );
@@ -189,23 +189,53 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 
 		/**
 		 * Takes a CSV string and converts it to an array.
+		 *
+		 * Must be formatted where first line is keys, and all preceeding lines are values.
+		 *
 		 * @param  [type]  $string  [description]
 		 * @param  boolean $to_json [description]
-		 * @return [type]           [description]
+		 * @return array
 		 */
-		public static function csv_s_to_array( $string, bool $to_json = false ){
+		public static function scsv_to_array( $string, bool $to_json = false ){
+
+			// Strip slashes.
+			$string = str_replace( '\\\'\\\'', ' ', $string ); // For null entries.
+			$string = str_replace( '\\"\\"', ' ', $string );  // For null entries
+			$string = str_replace( '\\\'', '',  $string );   // For removing unecessary quotes.
+			$string = str_replace( '\\"', '', $string ); 		// For removing unecessary quotes.
 
 			$lines = array_map( 'trim', preg_split( '/(\r\n|\r|\n)/', $string ) );
 
-			foreach( $lines as &$line ){
-				$line = array_map( 'trim', str_getcsv( $line ) ); // Default delineator is ','
+			if( count( $lines ) == 0 ){
+				return array();
+			}
+
+			// removes null items
+			$keys = array_map( 'trim', str_getcsv( $lines[0] ) );
+			$ideal_length = count( $keys );
+
+			// Removes elements that do not have the correct number of parameters (though it's OK if they're blank, long as there's enough?);
+			$data = array();
+			foreach( array_slice( $lines, 1 ) as $line ){
+				$s = str_getcsv( $line );
+				if( count( $s ) == $ideal_length ){
+					array_push( $data, $s );
+				}else if( count( $s ) > $ideal_length ){ // Helpful in case of trailing commas.
+					array_push( $data, array_slice( $s, 0, $ideal_length ) );
+				}
+			}
+
+			// Maps values to the keys
+			$output = array();
+			for( $i = 0; $i<count($data); $i++){
+				 array_push( $output, array_combine( $keys, array_map( 'trim', $data[$i] ) ) ); // Default delineator is ','
 			}
 
 			if( $to_json === true ){
 				return wp_json_encode( $lines );
 			}
 
-			return $lines;
+			return $output;
 
 		}
 
@@ -292,12 +322,12 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 *
 	 * @return array|WP_Error|json
 	 */
-	function _csv_f_to_array( $file_path, bool $to_json = false ){
-		return IMFORZA_Utils::csv_f_to_array( $file_path, $to_json );
+	function _fcsv_to_array( $file_path, bool $to_json = false ){
+		return IMFORZA_Utils::fcsv_to_array( $file_path, $to_json );
 	}
-	/** Wrapper for _csv_f_to_array in case of incompatibility */
+	/** Wrapper for _fcsv_to_array in case of incompatibility */
 	function _csv_to_array( $file_path, bool $to_json = false ){
-		return _csv_f_to_array( $file_path, $to_json );
+		return _fcsv_to_array( $file_path, $to_json );
 	}
 
 	/**
@@ -305,8 +335,8 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 *
 	 * @return array|WP_Error|json
 	 */
-	function _csv_s_to_array( string $string, bool $to_json = false ){
-		return IMFORZA_Utils::csv_s_to_array( $string, $to_json );
+	function _scsv_to_array( string $string, bool $to_json = false ){
+		return IMFORZA_Utils::scsv_to_array( $string, $to_json );
 	}
 
 } // end if.
