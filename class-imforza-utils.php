@@ -197,12 +197,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * @return array
 		 */
 		public static function scsv_to_array( $string, bool $to_json = false ){
-
-			// Strip slashes.
-			$string = str_replace( '\\\'\\\'', ' ', $string ); // For null entries.
-			$string = str_replace( '\\"\\"', ' ', $string );  // For null entries
-			$string = str_replace( '\\\'', '',  $string );   // For removing unecessary quotes.
-			$string = str_replace( '\\"', '', $string ); 		// For removing unecessary quotes.
+			$string = stripslashes( $string );
 
 			$lines = array_map( 'trim', preg_split( '/(\r\n|\r|\n)/', $string ) );
 
