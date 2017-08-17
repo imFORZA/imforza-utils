@@ -165,7 +165,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * @param  boolean $to_json   True to return array as json.
 		 * @return array|WP_Error|json
 		 */
-		public static function csv_to_array( $file_path, bool $to_json = false ){
+		public static function csv_f_to_array( $file_path, bool $to_json = false ){
 			// Open file, return error if file could not be opened.
 			if ( ( $file = fopen( $file_path, 'r')) === false) {
 				return new WP_Error( 'file-error',  __( 'Error: Could not open file.', 'hostops' ) );
@@ -185,6 +185,28 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			}
 
 			return $data;
+		}
+
+		/**
+		 * Takes a CSV string and converts it to an array.
+		 * @param  [type]  $string  [description]
+		 * @param  boolean $to_json [description]
+		 * @return [type]           [description]
+		 */
+		public static function csv_s_to_array( $string, bool $to_json = false ){
+
+			$lines = array_map( 'trim', preg_split( '/(\r\n|\r|\n)/', $string ) );
+
+			foreach( $lines as &$line ){
+				$line = array_map( 'trim', str_getcsv( $line ) ); // Default delineator is ','
+			}
+
+			if( $to_json === true ){
+				return wp_json_encode( $lines );
+			}
+
+			return $lines;
+
 		}
 
 	} // end class.
@@ -270,7 +292,21 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 *
 	 * @return array|WP_Error|json
 	 */
-	function _csv_to_array( $file_path, bool $to_json = false ){
-		return IMFORZA_Utils::csv_to_array( $file_path, $to_json );
+	function _csv_f_to_array( $file_path, bool $to_json = false ){
+		return IMFORZA_Utils::csv_f_to_array( $file_path, $to_json );
 	}
+	/** Wrapper for _csv_f_to_array in case of incompatibility */
+	function _csv_to_array( $file_path, bool $to_json = false ){
+		return _csv_f_to_array( $file_path, $to_json );
+	}
+
+	/**
+	 * Wrapper function for IMFORZA_Utils::csv_s_to_array();
+	 *
+	 * @return array|WP_Error|json
+	 */
+	function _csv_s_to_array( string $string, bool $to_json = false ){
+		return IMFORZA_Utils::csv_s_to_array( $string, $to_json );
+	}
+
 } // end if.
