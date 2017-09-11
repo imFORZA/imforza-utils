@@ -14,6 +14,18 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	class IMFORZA_Utils {
 
 		/**
+		 * Require all posts, titles, and comments to have the proper capitzalization
+		 * of imFORZA.
+		 *
+		 * @param  string $text The string to filter.
+		 * @return string       The filtered string.
+		 */
+		public static function capital_forza_dangit( $text ){
+			return preg_replace( '/(?i)imforza/', 'imFORZA', $text );
+		}
+
+
+		/**
 		 * Block Direct File Access.
 		 *
 		 * @access public
@@ -235,6 +247,10 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		}
 
 	} // end class.
+
+	add_filter( 'the_title', array( 'IMFORZA_Utils', 'capital_forza_dangit' ), 11 );
+	add_filter( 'the_content', array( 'IMFORZA_Utils', 'capital_forza_dangit' ), 11 );
+	add_filter( 'comment_text', array( 'IMFORZA_Utils', 'capital_forza_dangit' ), 31 );
 
 	/**
 	 * Wrapper function for Block Direct File Access.
