@@ -20,7 +20,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * @param  string $text The string to filter.
 		 * @return string       The filtered string.
 		 */
-		public static function capital_forza_dangit( $text ){
+		public static function capital_forza_dangit( $text ) {
 			return preg_replace( '/(?i)imforza/', 'imFORZA', $text );
 		}
 
@@ -95,8 +95,8 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			$remote_ip = filter_input( INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP );
 
 			$local_ips = array(
-			'127.0.0.1', // IPv4.
-			'::1',			 // IPv6.
+				'127.0.0.1', // IPv4.
+			'::1',           // IPv6.
 			);
 
 			$local_ips = apply_filters( 'imutils_local_ips', $local_ips );
@@ -177,9 +177,9 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * @param  boolean $to_json   True to return array as json.
 		 * @return array|WP_Error|json
 		 */
-		public static function fcsv_to_array( $file_path, bool $to_json = false ){
+		public static function fcsv_to_array( $file_path, bool $to_json = false ) {
 			// Open file, return error if file could not be opened.
-			if ( ( $file = fopen( $file_path, 'r')) === false) {
+			if ( ( $file = fopen( $file_path, 'r' )) === false ) {
 				return new WP_Error( 'file-error',  __( 'Error: Could not open file.', 'hostops' ) );
 			}
 
@@ -190,9 +190,9 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 				$data[] = array_combine( $keys, array_map( 'trim', $row ) );
 			}
 
-			fclose($file);
+			fclose( $file );
 
-			if( true === $to_json ){
+			if ( true === $to_json ) {
 				$data = wp_json_encode( $data );
 			}
 
@@ -208,12 +208,12 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * @param  boolean $to_json [description]
 		 * @return array
 		 */
-		public static function scsv_to_array( $string, bool $to_json = false ){
+		public static function scsv_to_array( $string, bool $to_json = false ) {
 			$string = stripslashes( $string );
 
 			$lines = array_map( 'trim', preg_split( '/(\r\n|\r|\n)/', $string ) );
 
-			if( count( $lines ) == 0 ){
+			if ( count( $lines ) == 0 ) {
 				return array();
 			}
 
@@ -223,22 +223,22 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 
 			// Removes elements that do not have the correct number of parameters (though it's OK if they're blank, long as there's enough?);
 			$data = array();
-			foreach( array_slice( $lines, 1 ) as $line ){
+			foreach ( array_slice( $lines, 1 ) as $line ) {
 				$s = str_getcsv( $line );
-				if( count( $s ) == $ideal_length ){
+				if ( count( $s ) == $ideal_length ) {
 					array_push( $data, $s );
-				}else if( count( $s ) > $ideal_length ){ // Helpful in case of trailing commas.
+				} elseif ( count( $s ) > $ideal_length ) { // Helpful in case of trailing commas.
 					array_push( $data, array_slice( $s, 0, $ideal_length ) );
 				}
 			}
 
 			// Maps values to the keys
 			$output = array();
-			for( $i = 0; $i<count($data); $i++){
-				 array_push( $output, array_combine( $keys, array_map( 'trim', $data[$i] ) ) ); // Default delineator is ','
+			for ( $i = 0; $i < count( $data ); $i++ ) {
+				 array_push( $output, array_combine( $keys, array_map( 'trim', $data[ $i ] ) ) ); // Default delineator is ','
 			}
 
-			if( $to_json === true ){
+			if ( $to_json === true ) {
 				return wp_json_encode( $lines );
 			}
 
@@ -333,11 +333,11 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 *
 	 * @return array|WP_Error|json
 	 */
-	function _fcsv_to_array( $file_path, bool $to_json = false ){
+	function _fcsv_to_array( $file_path, bool $to_json = false ) {
 		return IMFORZA_Utils::fcsv_to_array( $file_path, $to_json );
 	}
 	/** Wrapper for _fcsv_to_array in case of incompatibility */
-	function _csv_to_array( $file_path, bool $to_json = false ){
+	function _csv_to_array( $file_path, bool $to_json = false ) {
 		return _fcsv_to_array( $file_path, $to_json );
 	}
 
@@ -346,8 +346,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 *
 	 * @return array|WP_Error|json
 	 */
-	function _scsv_to_array( string $string, bool $to_json = false ){
+	function _scsv_to_array( string $string, bool $to_json = false ) {
 		return IMFORZA_Utils::scsv_to_array( $string, $to_json );
 	}
-
 } // end if.
