@@ -246,6 +246,18 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 
 		}
 
+		/**
+		 * Checks if url is https.
+		 *
+		 * @static
+		 * @param  string   $url Url to check.
+		 * @return boolean       Returns true if url is https.
+		 */
+		public static function is_url_https( string $url ){
+			$scheme = parse_url( $url, PHP_URL_SCHEME );
+			return ( $scheme === 'https') ? true : false;
+		}
+
 	} // end class.
 
 	add_filter( 'the_title', array( 'IMFORZA_Utils', 'capital_forza_dangit' ), 11 );
@@ -348,5 +360,14 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 */
 	function _scsv_to_array( string $string, bool $to_json = false ) {
 		return IMFORZA_Utils::scsv_to_array( $string, $to_json );
+	}
+
+	/**
+	 * Wrapper function for IMFORZA_Utils::csv_s_to_array();
+	 * @param  string  $url URL to check.
+	 * @return boolean      Returns true if url is https.
+	 */
+	function _is_url_https( string $url ){
+		return IMFORZA_Utils::is_url_https( $url );
 	}
 } // end if.
