@@ -21,7 +21,8 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * @return string       The filtered string.
 		 */
 		public static function capital_forza_dangit( $text ) {
-			return preg_replace( '/(?i)imforza/', 'imFORZA', $text );
+
+			return preg_replace( '/(?=(i|I)(m|M)(f|F)(o|O)(r|R)(z|Z)(a|A))(?!imforza)/', 'imFORZA', $text );
 		}
 
 
