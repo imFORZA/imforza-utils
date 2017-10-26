@@ -267,9 +267,6 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 
 	} // end class.
 
-	add_filter( 'the_title', array( 'IMFORZA_Utils', 'capital_forza_dangit' ), 11 );
-	add_filter( 'the_content', array( 'IMFORZA_Utils', 'capital_forza_dangit' ), 11 );
-	add_filter( 'comment_text', array( 'IMFORZA_Utils', 'capital_forza_dangit' ), 31 );
 
 	/**
 	 * Wrapper function for Block Direct File Access.
