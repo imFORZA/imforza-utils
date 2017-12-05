@@ -265,6 +265,57 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			return ( $scheme === 'https') ? true : false;
 		}
 
+		/**
+		 * Time elapsed between 2 dates.
+		 *
+		 * i.e. 5 minutes.
+		 * i.e  2 days and 6 hours.
+		 *
+		 * @param  mixed $start_date  Start Date.
+		 * @param  mixed $end_date    End Date.
+		 * @return string             String with time elapsed.
+		 */
+		public static function elapsed_time_string( $start_date, $end_date ){
+			$date1 = date_create( $start_date );
+		  $date2 = date_create( $end_date );
+		  $diff  = date_diff( $date1, $date2 );
+
+			$dur = array_filter( array_slice( (array) $diff, 0, 6 ));
+      $total = count( $dur );
+      $tick = $total;
+      $string = '';
+
+      foreach( $dur as $key => $value ){
+			  switch( $key ){
+				  case 'y':
+					  $string .= "$value year";
+					  break;
+				  case 'm':
+					  $string .= "$value month";
+					  break;
+				  case 'd':
+					  $string .= "$value day";
+				    break;
+				  case 'h':
+					  $string .= "$value hour";
+					  break;
+				  case 'i':
+					  $string .= "$value minute";
+					  break;
+				  case 's':
+					  $string .= "$value second";
+					  break;
+			  }
+				$string .=  ( 1 < $value ) ? 's ' : ' ';
+
+				if( 1 < $total && --$tick === 1) {
+					$string .= 'and ';
+				}
+			}
+
+			return $string;
+		}
+
 	} // end class.
 
 
@@ -373,5 +424,9 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 */
 	function _is_url_https( string $url ){
 		return IMFORZA_Utils::is_url_https( $url );
+	}
+
+	function _elapsed_time_string( $start_date, $end_date ){
+		return IMFORZA_Utils::elapsed_time_string( $start_date, $end_date );
 	}
 } // end if.
