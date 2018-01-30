@@ -265,6 +265,28 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			return ( $scheme === 'https') ? true : false;
 		}
 
+		/**
+		 * Get the final redirect of a URL.
+		 *
+		 * @param  string $url URL to check for redirects.
+		 * @return string|boolean      Final redirect url or false on error.
+		 */
+		public function url_final_redirect( $url ) {
+			$ch = curl_init( $url );
+			curl_setopt( $ch, CURLOPT_NOBODY, 1 );
+			curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 ); // Follow redirects.
+			curl_setopt( $ch, CURLOPT_AUTOREFERER, 1 ); // Set referer on redirect.
+			curl_exec( $ch );
+			$target = curl_getinfo( $ch, CURLINFO_EFFECTIVE_URL );
+			curl_close( $ch );
+
+			if ( $target ) {
+				return $target;
+			}
+
+			return false;
+		}
+
 	} // end class.
 
 
@@ -373,6 +395,16 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 */
 	function _is_url_https( string $url ){
 		return IMFORZA_Utils::is_url_https( $url );
+	}
+
+	/**
+ 	* Wrapper function for IMFORZA_Utils::url_final_redirect();
+ 	*
+ 	* @param  string $url URL to check for redirects.
+ 	* @return string|boolean      Final redirect url or false on error.
+ 	*/
+  function _url_final_redirect( $url ) {
+		return IMFORZA_Utils::url_final_redirect( $url );
 	}
 
 } // end if.
