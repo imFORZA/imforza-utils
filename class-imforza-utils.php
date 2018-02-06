@@ -102,7 +102,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			$remote_ip = filter_input( INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP );
 
 			$local_ips = array(
-				'127.0.0.1', // IPv4.
+			  '127.0.0.1', // IPv4.
 			  '::1',       // IPv6.
 			);
 
