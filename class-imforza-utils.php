@@ -403,7 +403,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
  	* @param  string $url URL to check for redirects.
  	* @return string|boolean      Final redirect url or false on error.
  	*/
-  function _url_final_redirect( $url ) {
+        function _url_final_redirect( $url ) {
 		return IMFORZA_Utils::url_final_redirect( $url );
 	}
 
