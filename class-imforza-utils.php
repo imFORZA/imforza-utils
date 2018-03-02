@@ -120,9 +120,9 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		public static function is_forbidden_source() {
 			// Forbidden domains.
 			$forbidden = array(
-				'.wpengine.com',
-				'.dev',
-				'.local',
+				'wpengine' => '.wpengine.com',
+				'dev' => '.dev',
+				'local' =>'.local',
 			);
 
 			// Filter to add or remove domains from forbidden array.
