@@ -129,7 +129,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			$forbidden = apply_filters( 'imutils_forbiddden_domains', $forbidden );
 
 			// Grab the installs url.
-			$this_domain = parse_url( get_site_url(), PHP_URL_HOST );
+			$this_domain = self::get_site_hostname();
 
 			foreach ( $forbidden as $domain ) {
 				if ( false !== strpos( $this_domain, $domain ) ) {
@@ -138,6 +138,16 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			}
 
 			return false;
+		}
+
+		/**
+		 * Gets the host domain of the wordpress site url.
+		 *
+		 * @static
+		 * @return string Returns the site host name.
+		 */
+		public static function get_site_hostname(){
+			return strtolower( parse_url( get_site_url(), PHP_URL_HOST ) );
 		}
 
 		/**
@@ -364,6 +374,16 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 */
 	function _is_forbidden_source() {
 		return IMFORZA_Utils::is_forbidden_source();
+	}
+
+	/**
+	 *  Wrapper function for IMFORZA_Utils::get_site_hostname();
+	 *
+	 * @static
+	 * @return string Returns the site host name.
+	 */
+	function _get_site_hostname(){
+		return strtolower( parse_url( get_site_url(), PHP_URL_HOST ) );
 	}
 
 	/**
