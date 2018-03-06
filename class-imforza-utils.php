@@ -271,7 +271,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * @param  string $url URL to check for redirects.
 		 * @return string|boolean      Final redirect url or false on error.
 		 */
-		public function url_final_redirect( $url ) {
+		public static function url_final_redirect( $url ) {
 			$ch = curl_init( $url );
 			curl_setopt( $ch, CURLOPT_NOBODY, 1 );
 			curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 ); // Follow redirects.
@@ -285,6 +285,24 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			}
 
 			return false;
+		}
+
+		/**
+		* Get cloudflare request geolocation.
+		*
+		* @return string  Return cloudflare geolocation request var.
+		*/
+		public static function get_cloudflare_geolocation() {
+			return ( isset(  $_SERVER["HTTP_CF_IPCOUNTRY"] ) ? $_SERVER["HTTP_CF_IPCOUNTRY"] : '' );
+		}
+
+		/**
+		* Get cloudflare ray.
+		*
+		* @return string  Return cloudflare ray request var.
+		*/
+		public static function get_cloudflare_ray() {
+			return ( isset( $_SERVER["HTTP_CF_RAY"] ) ? $_SERVER["HTTP_CF_RAY"] : '' );
 		}
 
 	} // end class.
@@ -403,8 +421,26 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
  	* @param  string $url URL to check for redirects.
  	* @return string|boolean      Final redirect url or false on error.
  	*/
-        function _url_final_redirect( $url ) {
+  function _url_final_redirect( $url ) {
 		return IMFORZA_Utils::url_final_redirect( $url );
+	}
+
+	/**
+	* Wrapper function for IMFORZA_Utils::get_cloudflare_geolocation();
+	*
+	* @return string  Return cloudflare geolocation request var.
+	*/
+	function _get_cloudflare_geolocation() {
+		return IMFORZA_Utils::get_cloudflare_geolocation();
+	}
+
+	/**
+	* Wrapper function for IMFORZA_Utils::get_cloudflare_ray();
+	*
+	* @return string  Return cloudflare ray request var.
+	*/
+	function _get_cloudflare_ray() {
+		return IMFORZA_Utils::get_cloudflare_ray();
 	}
 
 } // end if.
