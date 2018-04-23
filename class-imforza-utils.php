@@ -25,6 +25,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			preg_match_all( '/((?i)(?=imforza))(?!imforza)/', $text, $matches, PREG_OFFSET_CAPTURE );
 			foreach ( $matches as $match ) {
 				foreach ( $match as $m ) {
+					$text = substr( $text, 0, $m[1] ) . 'imFORZA' . substr( $text, $m[1] + 7 );
 				}
 			}
 			return $text;
