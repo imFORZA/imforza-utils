@@ -23,9 +23,8 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		public static function capital_forza_dangit( $text ) {
 			$matches = array();
 			preg_match_all( '/((?i)(?=imforza))(?!imforza)/', $text, $matches, PREG_OFFSET_CAPTURE );
-			foreach( $matches as $match ){
-				foreach( $match as $m ){
-					$text = substr( $text, 0, $m[1] ) . 'imFORZA' . substr($text, $m[1] + 7 );
+			foreach ( $matches as $match ) {
+				foreach ( $match as $m ) {
 				}
 			}
 			return $text;
@@ -69,11 +68,11 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		public static function schedule_cron( $hook, $recurrence = null, $time = null ) {
 			// If reccurence and time not sent, then set defaults.
 			$recurrence = $recurrence ?? 'daily';
-			$time = $time ?? time();
+			$time       = $time ?? time();
 
 			// Schedule.
 			if ( ! wp_next_scheduled( $hook ) ) {
-				wp_schedule_event( $time, $recurrence , $hook );
+				wp_schedule_event( $time, $recurrence, $hook );
 			}
 		}
 
@@ -102,8 +101,8 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			$remote_ip = filter_input( INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP );
 
 			$local_ips = array(
-			  '127.0.0.1', // IPv4.
-			  '::1',       // IPv6.
+				'127.0.0.1', // IPv4.
+				'::1',       // IPv6.
 			);
 
 			$local_ips = apply_filters( 'imutils_local_ips', $local_ips );
@@ -121,8 +120,8 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			// Forbidden domains.
 			$forbidden = array(
 				'wpengine' => '.wpengine.com',
-				'dev' => '.dev',
-				'local' =>'.local',
+				'dev'      => '.dev',
+				'local'    => '.local',
 			);
 
 			// Filter to add or remove domains from forbidden array.
@@ -141,12 +140,12 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		}
 
 		/**
-		 * Gets the host domain of the wordpress site url.
+		 * Gets the host domain of the WordPress site url.
 		 *
 		 * @static
 		 * @return string Returns the site host name.
 		 */
-		public static function get_site_hostname(){
+		public static function get_site_hostname() {
 			return strtolower( parse_url( get_site_url(), PHP_URL_HOST ) );
 		}
 
@@ -196,8 +195,8 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 */
 		public static function fcsv_to_array( $file_path, bool $to_json = false ) {
 			// Open file, return error if file could not be opened.
-			if ( ( $file = fopen( $file_path, 'r' )) === false ) {
-				return new WP_Error( 'file-error',  __( 'Error: Could not open file.', 'hostops' ) );
+			if ( ( $file = fopen( $file_path, 'r' ) ) === false ) {
+				return new WP_Error( 'file-error', __( 'Error: Could not open file.', 'hostops' ) );
 			}
 
 			$keys = array_map( 'trim', fgetcsv( $file ) );
@@ -235,7 +234,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			}
 
 			// removes null items
-			$keys = array_map( 'trim', str_getcsv( $lines[0] ) );
+			$keys         = array_map( 'trim', str_getcsv( $lines[0] ) );
 			$ideal_length = count( $keys );
 
 			// Removes elements that do not have the correct number of parameters (though it's OK if they're blank, long as there's enough?);
@@ -267,12 +266,12 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * Checks if url is https.
 		 *
 		 * @static
-		 * @param  string   $url Url to check.
+		 * @param  string $url Url to check.
 		 * @return boolean       Returns true if url is https.
 		 */
-		public static function is_url_https( string $url ){
+		public static function is_url_https( string $url ) {
 			$scheme = parse_url( $url, PHP_URL_SCHEME );
-			return ( $scheme === 'https') ? true : false;
+			return ( $scheme === 'https' ) ? true : false;
 		}
 
 		/**
@@ -298,21 +297,21 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		}
 
 		/**
-		* Get cloudflare request geolocation.
-		*
-		* @return string  Return cloudflare geolocation request var.
-		*/
+		 * Get cloudflare request geolocation.
+		 *
+		 * @return string  Return cloudflare geolocation request var.
+		 */
 		public static function get_cloudflare_geolocation() {
-			return ( isset(  $_SERVER["HTTP_CF_IPCOUNTRY"] ) ? $_SERVER["HTTP_CF_IPCOUNTRY"] : '' );
+			return ( isset( $_SERVER['HTTP_CF_IPCOUNTRY'] ) ? $_SERVER['HTTP_CF_IPCOUNTRY'] : '' );
 		}
 
 		/**
-		* Get cloudflare ray.
-		*
-		* @return string  Return cloudflare ray request var.
-		*/
+		 * Get cloudflare ray.
+		 *
+		 * @return string  Return cloudflare ray request var.
+		 */
 		public static function get_cloudflare_ray() {
-			return ( isset( $_SERVER["HTTP_CF_RAY"] ) ? $_SERVER["HTTP_CF_RAY"] : '' );
+			return ( isset( $_SERVER['HTTP_CF_RAY'] ) ? $_SERVER['HTTP_CF_RAY'] : '' );
 		}
 
 	} // end class.
@@ -382,7 +381,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 * @static
 	 * @return string Returns the site host name.
 	 */
-	function _get_site_hostname(){
+	function _get_site_hostname() {
 		return strtolower( parse_url( get_site_url(), PHP_URL_HOST ) );
 	}
 
@@ -428,39 +427,39 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 
 	/**
 	 * Wrapper function for IMFORZA_Utils::csv_s_to_array();
-	 * @param  string  $url URL to check.
+	 *
+	 * @param  string $url URL to check.
 	 * @return boolean      Returns true if url is https.
 	 */
-	function _is_url_https( string $url ){
+	function _is_url_https( string $url ) {
 		return IMFORZA_Utils::is_url_https( $url );
 	}
 
 	/**
- 	* Wrapper function for IMFORZA_Utils::url_final_redirect();
- 	*
- 	* @param  string $url URL to check for redirects.
- 	* @return string|boolean      Final redirect url or false on error.
- 	*/
-  function _url_final_redirect( $url ) {
+	 * Wrapper function for IMFORZA_Utils::url_final_redirect();
+	 *
+	 * @param  string $url URL to check for redirects.
+	 * @return string|boolean      Final redirect url or false on error.
+	 */
+	function _url_final_redirect( $url ) {
 		return IMFORZA_Utils::url_final_redirect( $url );
 	}
 
 	/**
-	* Wrapper function for IMFORZA_Utils::get_cloudflare_geolocation();
-	*
-	* @return string  Return cloudflare geolocation request var.
-	*/
+	 * Wrapper function for IMFORZA_Utils::get_cloudflare_geolocation();
+	 *
+	 * @return string  Return cloudflare geolocation request var.
+	 */
 	function _get_cloudflare_geolocation() {
 		return IMFORZA_Utils::get_cloudflare_geolocation();
 	}
 
 	/**
-	* Wrapper function for IMFORZA_Utils::get_cloudflare_ray();
-	*
-	* @return string  Return cloudflare ray request var.
-	*/
+	 * Wrapper function for IMFORZA_Utils::get_cloudflare_ray();
+	 *
+	 * @return string  Return cloudflare ray request var.
+	 */
 	function _get_cloudflare_ray() {
 		return IMFORZA_Utils::get_cloudflare_ray();
 	}
-
 } // end if.
