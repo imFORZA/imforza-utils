@@ -147,7 +147,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * @return string Returns the site host name.
 		 */
 		public static function get_site_hostname() {
-			return strtolower( parse_url( get_site_url(), PHP_URL_HOST ) );
+			return strtolower( wp_parse_url( get_site_url(), PHP_URL_HOST ) );
 		}
 
 		/**
@@ -230,7 +230,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 
 			$lines = array_map( 'trim', preg_split( '/(\r\n|\r|\n)/', $string ) );
 
-			if ( count( $lines ) == 0 ) {
+			if ( count( $lines ) === 0 ) {
 				return array();
 			}
 
@@ -242,7 +242,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 			$data = array();
 			foreach ( array_slice( $lines, 1 ) as $line ) {
 				$s = str_getcsv( $line );
-				if ( count( $s ) == $ideal_length ) {
+				if ( count( $s ) === $ideal_length ) {
 					array_push( $data, $s );
 				} elseif ( count( $s ) > $ideal_length ) { // Helpful in case of trailing commas.
 					array_push( $data, array_slice( $s, 0, $ideal_length ) );
@@ -271,7 +271,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 * @return boolean       Returns true if url is https.
 		 */
 		public static function is_url_https( string $url ) {
-			$scheme = parse_url( $url, PHP_URL_SCHEME );
+			$scheme = wp_parse_url( $url, PHP_URL_SCHEME );
 			return ( $scheme === 'https' ) ? true : false;
 		}
 
@@ -383,7 +383,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 	 * @return string Returns the site host name.
 	 */
 	function _get_site_hostname() {
-		return strtolower( parse_url( get_site_url(), PHP_URL_HOST ) );
+		return strtolower( wp_parse_url( get_site_url(), PHP_URL_HOST ) );
 	}
 
 	/**
