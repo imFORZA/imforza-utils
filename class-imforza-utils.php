@@ -221,9 +221,9 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 *
 		 * Must be formatted where first line is keys, and all preceeding lines are values.
 		 *
-		 * @param  [type]  $string  [description]
-		 * @param  boolean $to_json [description]
-		 * @return array
+		 * @param  [type]  $string  String.
+		 * @param  boolean $to_json To JSON.
+		 * @return array JSON Array.
 		 */
 		public static function scsv_to_array( $string, bool $to_json = false ) {
 			$string = stripslashes( $string );
@@ -234,11 +234,11 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 				return array();
 			}
 
-			// removes null items
+			// Removes null items.
 			$keys         = array_map( 'trim', str_getcsv( $lines[0] ) );
 			$ideal_length = count( $keys );
 
-			// Removes elements that do not have the correct number of parameters (though it's OK if they're blank, long as there's enough?);
+			// Removes elements that do not have the correct number of parameters (though it's OK if they're blank, long as there's enough?).
 			$data = array();
 			foreach ( array_slice( $lines, 1 ) as $line ) {
 				$s = str_getcsv( $line );
@@ -255,7 +255,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 				 array_push( $output, array_combine( $keys, array_map( 'trim', $data[ $i ] ) ) ); // Default delineator is ','
 			}
 
-			if ( $to_json === true ) {
+			if ( true === $to_json ) {
 				return wp_json_encode( $lines );
 			}
 
@@ -272,7 +272,7 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		 */
 		public static function is_url_https( string $url ) {
 			$scheme = wp_parse_url( $url, PHP_URL_SCHEME );
-			return ( $scheme === 'https' ) ? true : false;
+			return ( 'https' === $scheme ) ? true : false;
 		}
 
 		/**
