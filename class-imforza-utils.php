@@ -404,23 +404,35 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 		return IMFORZA_Utils::is_development_mode();
 	}
 
+
 	/**
 	 * Wrapper function for IMFORZA_Utils::csv_to_array();
 	 *
-	 * @return array|WP_Error|json
+	 * @access private
+	 * @param mixed $file_path File Path.
+	 * @param bool  $to_json (default: false) To JSON.
 	 */
 	function _fcsv_to_array( $file_path, bool $to_json = false ) {
 		return IMFORZA_Utils::fcsv_to_array( $file_path, $to_json );
 	}
-	/** Wrapper for _fcsv_to_array in case of incompatibility */
+
+	/**
+	 * Wrapper for _fcsv_to_array in case of incompatibility.
+	 *
+	 * @access private
+	 * @param mixed $file_path File Path.
+	 * @param bool  $to_json (default: false) To JSON.
+	 */
 	function _csv_to_array( $file_path, bool $to_json = false ) {
 		return _fcsv_to_array( $file_path, $to_json );
 	}
 
 	/**
-	 * Wrapper function for IMFORZA_Utils::csv_s_to_array();
+	 * Wrapper function for IMFORZA_Utils::csv_s_to_array();.
 	 *
-	 * @return array|WP_Error|json
+	 * @access private
+	 * @param string $string String.
+	 * @param bool   $to_json (default: false) To JSON.
 	 */
 	function _scsv_to_array( string $string, bool $to_json = false ) {
 		return IMFORZA_Utils::scsv_to_array( $string, $to_json );
