@@ -249,10 +249,10 @@ if ( ! class_exists( 'IMFORZA_Utils' ) ) {
 				}
 			}
 
-			// Maps values to the keys
+			// Maps values to the keys.
 			$output = array();
 			for ( $i = 0; $i < count( $data ); $i++ ) {
-				 array_push( $output, array_combine( $keys, array_map( 'trim', $data[ $i ] ) ) ); // Default delineator is ','
+				 array_push( $output, array_combine( $keys, array_map( 'trim', $data[ $i ] ) ) ); // Default delineator is ','.
 			}
 
 			if ( true === $to_json ) {
